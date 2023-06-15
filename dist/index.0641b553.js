@@ -590,9 +590,11 @@ for(let i = 0; i < 100; i++){
         height: dim,
         x: Math.random() * (window.innerWidth - dim),
         y: Math.random() * (window.innerHeight - dim),
-        fill: `hsl(${Math.floor(Math.random() * 255)} 80% 70%)`,
+        fill: `hsl(${Math.floor(Math.random() * 255)} 90% 70%)`,
         draggable: true,
-        id: i
+        id: i,
+        stroke: "#333",
+        strokeWidth: 1
     });
     layer.add(rect);
 }
