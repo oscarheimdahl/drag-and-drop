@@ -34,8 +34,8 @@ document.addEventListener('keydown', (e) => {
 
 stage.addEventListener('wheel', (e) => {
   const zoomIn = e.wheelDeltaY > 0;
-  if (stage.scaleX() > 4 && zoomIn && e.wheelDeltaY > 50) return;
-  if (stage.scaleX() < 0.1 && !zoomIn && e.wheelDeltaY < 50) return;
+  if (stage.scaleX() > 4 && zoomIn) return;
+  if (stage.scaleX() < 0.1 && !zoomIn) return;
   let factor = 0.8;
   if (zoomIn) factor = 1 / factor;
 
