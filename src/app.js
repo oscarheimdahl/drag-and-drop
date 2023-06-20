@@ -32,12 +32,10 @@ document.addEventListener('keydown', (e) => {
   else document.body.classList.remove('draggable');
 });
 
-stage.addEventListener('dragmove', (e) => {});
-
 stage.addEventListener('wheel', (e) => {
   const zoomIn = e.wheelDeltaY > 0;
-  if (stage.scaleX() > 4 && zoomIn) return;
-  if (stage.scaleX() < 0.1 && !zoomIn) return;
+  if (stage.scaleX() > 4 && zoomIn && e.wheelDeltaY > 50) return;
+  if (stage.scaleX() < 0.1 && !zoomIn && e.wheelDeltaY < 50) return;
   let factor = 0.8;
   if (zoomIn) factor = 1 / factor;
 
@@ -145,3 +143,18 @@ function canSnapTo(thisRect, otherRect) {
   }
 }
 stage.add(layer);
+
+//
+
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    if (!timer) {
+      func.apply(this, args);
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = undefined;
+    }, timeout);
+  };
+}
