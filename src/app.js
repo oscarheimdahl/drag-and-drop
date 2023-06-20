@@ -4,9 +4,10 @@ const stage = new konva.Stage({
   container: 'container',
   width: window.innerWidth,
   height: window.innerHeight,
+  draggable: true,
 });
 
-const layer = new konva.Layer();
+const layer = new konva.Layer({});
 
 for (let i = 0; i < 100; i++) {
   const dim = 50;
@@ -17,13 +18,37 @@ for (let i = 0; i < 100; i++) {
     y: Math.random() * (window.innerHeight - dim),
     fill: `hsl(${Math.floor(Math.random() * 255)} 90% 70%)`,
     draggable: true,
-    id: i,
+    id: i + '',
     stroke: '#333',
     strokeWidth: 1,
   });
 
   layer.add(rect);
 }
+
+document.addEventListener('keydown', (e) => {
+  stage.draggable(!stage.draggable());
+  if (stage.draggable()) document.body.classList.add('draggable');
+  else document.body.classList.remove('draggable');
+});
+
+stage.addEventListener('dragmove', (e) => {});
+
+stage.addEventListener('wheel', (e) => {
+  const zoomIn = e.wheelDeltaY > 0;
+  if (stage.scaleX() > 4 && zoomIn) return;
+  if (stage.scaleX() < 0.1 && !zoomIn) return;
+  let factor = 0.8;
+  if (zoomIn) factor = 1 / factor;
+
+  stage.scaleX(stage.scaleX() * factor);
+  stage.scaleY(stage.scaleY() * factor);
+
+  const dx = (e.x - stage.x()) * (factor - 1);
+  const dy = (e.y - stage.y()) * (factor - 1);
+  stage.x(stage.x() - dx);
+  stage.y(stage.y() - dy);
+});
 
 layer.children.forEach((thisRect) => {
   thisRect.addEventListener('mouseup', () => {
